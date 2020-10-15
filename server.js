@@ -45,4 +45,4 @@ const indexRouter = require('./routes/index')
     app.use('/', indexRouter)
 
     //we have to tell our app we are going to listen on certain ports
-    app.listen(3000)
+    app.listen(process.env.PORT || 3000)
