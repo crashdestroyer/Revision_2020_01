@@ -9,8 +9,11 @@ const app = express()
 //import layout package
 const expressLayouts = require('express-ejs-layouts')
 
-//to be able to execute routes we have to hook-up the directory
+//routing
 const indexRouter = require('./routes/index')
+const authorRouter = require('./routes/authors')
+
+const bodyParser = require('body-parser')
 
 //configuration of express app
     //set view engine, we are going to use 'ejs' engine
@@ -29,9 +32,11 @@ const indexRouter = require('./routes/index')
     //content of this file is: style sheets, js files or images
     app.use(express.static('public'))
 
+    app.use(bodyParser.urlencoded({ limit: '10mb', extended: false}))
+
    //DB connection
    const mongoose = require('mongoose')
-   const url = 'mongodb+srv://eb110:fhekjrs343Df@cluster0-rnf08.mongodb.net/test?retryWrites=true&w=majority'
+   const url = 'mongodb+srv://eb110:fhekjrs343Df@cluster0-rnf08.mongodb.net/MyBrary?retryWrites=true&w=majority'
    mongoose.connect(url,{
        useNewUrlParser: true,
        useCreateIndex : true,
@@ -43,6 +48,8 @@ const indexRouter = require('./routes/index')
    
     //tell the app to use routes
     app.use('/', indexRouter)
+    //prependent sentence!!
+    app.use('/authors', authorRouter)
 
     //we have to tell our app we are going to listen on certain ports
     app.listen(process.env.PORT || 3000)
